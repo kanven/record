@@ -11,20 +11,16 @@
 
 Record通过Canel 以slave的方式同步Mysql的binlog日志并且以并发的方式将数据进行拉取、抽取、转换，最终以串行的方式进行持久化操作。
 
-![](images/工作原理图.jpg)
-
 <div align=center>
-    <img src = "http://git.fcbox.com/GP/CFG/record/raw/master/images/%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%9B%BE.jpg" alt="工作原理图">
+    <img src = "https://github.com/kanven/record/blob/master/images/工作原理图.jpg" alt="工作原理图">
 </div>
 
 ## 三、架构
 
 Record 大致可分为配置、HA、Core、Context、插件五大模块。配置模块负责节点、管道配置项的解析和校验；HA模块负责节点主备选举和切换；Core模块负责数据流控制、流转、同步确认、回滚、告警处理；Context模块负责插件、管道、告警、配置上下文管理。
 
-![](images/整体架构图.jpg)
-
 <div align=center>
-    <img src = "http://git.fcbox.com/GP/CFG/record/raw/master/images/%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt="整体架构图">
+    <img src = "https://github.com/kanven/record/blob/master/images/整体架构图.jpg" alt="整体架构图">
 </div>
 
 ## 四、配置
