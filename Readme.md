@@ -11,6 +11,8 @@
 
 Record通过Canel 以slave的方式同步Mysql的binlog日志并且以并发的方式将数据进行拉取、抽取、转换，最终以串行的方式进行持久化操作。
 
+![](images/工作原理图.jpg)
+
 <div align=center>
     <img src = "http://git.fcbox.com/GP/CFG/record/raw/master/images/%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%9B%BE.jpg" alt="工作原理图">
 </div>
