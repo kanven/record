@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="ERROR" strict="true">
+	<Properties>
+		<Property name="info">${log.dir}/logs/info.log</Property>
+		<Property name="error">${log.dir}/logs/error.log</Property>
+	</Properties>
+	<Appenders> 
+		<Console name="STDOUT">
+			<Layout type="PatternLayout" pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%p] [%t] %l %m%n" />
+		</Console>
+		<RollingFile name="INFO" fileName="${info}" filePattern="${log.dir}/logs/info-%d{MM-dd-yyyy}.log">
+			<Layout type="PatternLayout" pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%p] [%t] %l %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+			<Filters>
+				<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+				<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+		</RollingFile>
+		<RollingFile name="ERROR" fileName="${error}" filePattern="${log.dir}/logs/error-%d{MM-dd-yyyy}.log">
+			<Layout type="PatternLayout" pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%p] [%t] %l %m%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+			<Filters>
+				<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="STDOUT" />
+			<AppenderRef ref="INFO" />
+			<AppenderRef ref="ERROR" />
+		</Root>
+	</Loggers>
+</Configuration>
