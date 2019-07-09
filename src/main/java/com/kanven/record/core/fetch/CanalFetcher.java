@@ -52,11 +52,10 @@ import com.kanven.record.core.meta.Row;
 import com.kanven.record.core.parse.DataType;
 import com.kanven.record.exception.RecordException;
 import com.kanven.record.ext.PluginContext;
-import com.kanven.record.ext.plugins.extract.ExtractorPlugin;
 import com.kanven.record.ext.plugins.extract.db.filter.Filter;
 import com.kanven.record.ext.plugins.extract.db.filter.impl.RecordRowFilter;
-import com.kanven.record.ext.plugins.load.LoadPlugin;
-import com.kanven.record.ext.plugins.transform.TransformPlugin;
+import com.kanven.record.ext.plugins.load.Load;
+import com.kanven.record.ext.plugins.transform.Transform;
 import com.kanven.record.ext.plugins.transform.defaults.handler.impl.DefaultRowHandler;
 
 /**
@@ -323,7 +322,7 @@ public class CanalFetcher extends AbstractRecord implements ServerListener {
 
 	private void startExtractor() {
 		final String extractor = config.getExtractor();
-		ExtractorPlugin plugin = CanalFetchContext.getExtractor(piplineId, extractor);
+		com.kanven.record.ext.plugins.extract.Extractor plugin = CanalFetchContext.getExtractor(piplineId, extractor);
 		if (plugin == null) {
 			Filter filter = null;
 			String rule = config.getExtractorRule();
@@ -345,7 +344,7 @@ public class CanalFetcher extends AbstractRecord implements ServerListener {
 
 	private void startTransformer() {
 		final String name = config.getTransform();
-		TransformPlugin plugin = CanalFetchContext.getTransform(piplineId, name);
+		Transform plugin = CanalFetchContext.getTransform(piplineId, name);
 		if (plugin == null) {
 			try {
 				plugin = PluginContext.getTransform(name).newInstance();
@@ -363,14 +362,14 @@ public class CanalFetcher extends AbstractRecord implements ServerListener {
 	private void startLoader() {
 		final String path = config.getLoadConfig();
 		final String name = config.getLoad();
-		LoadPlugin plugin = CanalFetchContext.getLoad(piplineId, name);
+		Load plugin = CanalFetchContext.getLoad(piplineId, name);
 		if (plugin == null) {
 			try {
 				if (StringUtils.isBlank(path)) {
 					plugin = PluginContext.getLoad(config.getLoad()).newInstance();
 				} else {
-					Class<? extends LoadPlugin> clazz = PluginContext.getLoad(name);
-					Constructor<? extends LoadPlugin> c = clazz.getConstructor(String.class);
+					Class<? extends Load> clazz = PluginContext.getLoad(name);
+					Constructor<? extends Load> c = clazz.getConstructor(String.class);
 					plugin = c.newInstance(path);
 				}
 				CanalFetchContext.addLoad(piplineId, name, plugin);

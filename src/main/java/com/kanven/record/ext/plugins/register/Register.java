@@ -1,6 +1,6 @@
 package com.kanven.record.ext.plugins.register;
 
-public interface RegisterPlugin {
+public interface Register {
 
 	void registe(String path, String data);
 

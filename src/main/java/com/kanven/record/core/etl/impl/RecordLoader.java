@@ -14,7 +14,7 @@ import com.kanven.record.core.AbstractRecord;
 import com.kanven.record.core.Context;
 import com.kanven.record.core.Valve;
 import com.kanven.record.core.etl.Loader;
-import com.kanven.record.ext.plugins.load.LoadPlugin;
+import com.kanven.record.ext.plugins.load.Load;
 
 /**
  * 
@@ -65,7 +65,7 @@ public final class RecordLoader extends AbstractRecord implements Loader {
 
 	private void doLoader(FlowData flowData) {
 		FetcherConfig config = Context.config(piplineId);
-		LoadPlugin plugin = CanalFetchContext.getLoad(piplineId, config.getLoad());
+		Load plugin = CanalFetchContext.getLoad(piplineId, config.getLoad());
 		plugin.load(flowData);
 	}
 
@@ -79,7 +79,7 @@ public final class RecordLoader extends AbstractRecord implements Loader {
 	protected void doStop() {
 		executor.shutdownNow();
 		FetcherConfig config = Context.config(piplineId);
-		LoadPlugin plugin = CanalFetchContext.getLoad(piplineId, config.getLoad());
+		Load plugin = CanalFetchContext.getLoad(piplineId, config.getLoad());
 		plugin.close();
 		log.info("the loader of pipline(" + piplineId + ") is stopped");
 	}

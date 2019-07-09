@@ -29,7 +29,7 @@ import com.kanven.record.exception.RecordException;
 import com.kanven.record.ext.PluginContext;
 import com.kanven.record.ext.plugins.alarm.AlarmPlugin;
 import com.kanven.record.ext.plugins.register.ChildrenListener;
-import com.kanven.record.ext.plugins.register.RegisterPlugin;
+import com.kanven.record.ext.plugins.register.Register;
 
 /**
  * 
@@ -243,12 +243,12 @@ public class Server extends LifeCycle implements ChildrenListener {
 		}
 		String path = properties.getProperty(registerPathKey);
 		try {
-			RegisterPlugin register = null;
+			Register register = null;
 			if (StringUtils.isBlank(path)) {
 				register = PluginContext.getRegister(name).newInstance();
 			} else {
-				Class<? extends RegisterPlugin> plugin = PluginContext.getRegister(name);
-				Constructor<? extends RegisterPlugin> c = plugin.getConstructor(String.class);
+				Class<? extends Register> plugin = PluginContext.getRegister(name);
+				Constructor<? extends Register> c = plugin.getConstructor(String.class);
 				register = c.newInstance(path);
 			}
 			Context.register(register);
@@ -327,7 +327,7 @@ public class Server extends LifeCycle implements ChildrenListener {
 	}
 
 	private void regist() {
-		RegisterPlugin registerPlugin = Context.register();
+		Register registerPlugin = Context.register();
 		registerPlugin.subscribeChildrenChange(serverPath, this);
 		String path = registerPlugin.createEphemeralSequential(serverPath + "/", id);
 		this.seq = path.replace(serverPath + "/", "");
@@ -335,14 +335,14 @@ public class Server extends LifeCycle implements ChildrenListener {
 	}
 
 	private void unregist() {
-		RegisterPlugin registerPlugin = Context.register();
+		Register registerPlugin = Context.register();
 		registerPlugin.unsubscribeChildrenChange(serverPath, this);
 		registerPlugin.delete(serverPath + "/" + seq);
 	}
 
 	@Override
 	public void onSession() {
-		RegisterPlugin registerPlugin = Context.register();
+		Register registerPlugin = Context.register();
 		if (!registerPlugin.exist(serverPath + "/" + seq)) {
 			regist();
 		}

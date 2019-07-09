@@ -6,9 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.kanven.record.core.flow.FlowController;
-import com.kanven.record.ext.plugins.extract.ExtractorPlugin;
-import com.kanven.record.ext.plugins.load.LoadPlugin;
-import com.kanven.record.ext.plugins.transform.TransformPlugin;
+import com.kanven.record.ext.plugins.extract.Extractor;
+import com.kanven.record.ext.plugins.load.Load;
+import com.kanven.record.ext.plugins.transform.Transform;
 
 /**
  * 非线程安全类
@@ -20,45 +20,45 @@ public class CanalFetchContext {
 
 	private static final ConcurrentMap<Long, FlowController> flows = new ConcurrentHashMap<>();
 
-	private final static Map<Long, Map<String, ExtractorPlugin>> extractors = new HashMap<>();
+	private final static Map<Long, Map<String, Extractor>> extractors = new HashMap<>();
 
-	private final static Map<Long, Map<String, TransformPlugin>> transforms = new HashMap<>();
+	private final static Map<Long, Map<String, Transform>> transforms = new HashMap<>();
 
-	private final static Map<Long, Map<String, LoadPlugin>> loads = new HashMap<>();
+	private final static Map<Long, Map<String, Load>> loads = new HashMap<>();
 
-	public static void addLoad(Long piplineId, String load, LoadPlugin plugin) {
+	public static void addLoad(Long piplineId, String load, Load plugin) {
 		addPlugin(piplineId, load, plugin, loads);
 	}
 
-	public static LoadPlugin getLoad(Long piplineId, String load) {
-		Map<String, LoadPlugin> containers = loads.get(piplineId);
+	public static Load getLoad(Long piplineId, String load) {
+		Map<String, Load> containers = loads.get(piplineId);
 		if (containers == null) {
 			return null;
 		}
 		return containers.get(load);
 	}
 
-	public static ExtractorPlugin getExtractor(Long piplineId, String extractor) {
-		Map<String, ExtractorPlugin> containers = extractors.get(piplineId);
+	public static Extractor getExtractor(Long piplineId, String extractor) {
+		Map<String, Extractor> containers = extractors.get(piplineId);
 		if (containers == null) {
 			return null;
 		}
 		return containers.get(extractor);
 	}
 
-	public static void addExtractor(Long piplineId, String extractor, ExtractorPlugin plugin) {
+	public static void addExtractor(Long piplineId, String extractor, Extractor plugin) {
 		addPlugin(piplineId, extractor, plugin, extractors);
 	}
 
-	public static TransformPlugin getTransform(Long piplineId, String transform) {
-		Map<String, TransformPlugin> containers = transforms.get(piplineId);
+	public static Transform getTransform(Long piplineId, String transform) {
+		Map<String, Transform> containers = transforms.get(piplineId);
 		if (containers == null) {
 			return null;
 		}
 		return containers.get(transform);
 	}
 
-	public static void addTransform(Long piplineId, String transform, TransformPlugin plugin) {
+	public static void addTransform(Long piplineId, String transform, Transform plugin) {
 		addPlugin(piplineId, transform, plugin, transforms);
 	}
 

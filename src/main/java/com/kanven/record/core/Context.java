@@ -5,13 +5,13 @@ import java.util.Map;
 
 import com.kanven.record.core.fetch.FetcherConfig;
 import com.kanven.record.ext.plugins.alarm.AlarmPlugin;
-import com.kanven.record.ext.plugins.register.RegisterPlugin;
+import com.kanven.record.ext.plugins.register.Register;
 
 public class Context {
 
 	private final static Map<Long, FetcherConfig> configs = new HashMap<>();
 
-	private static RegisterPlugin registerPlugin;
+	private static Register registerPlugin;
 
 	private static AlarmPlugin alarmPlugin;
 
@@ -23,11 +23,11 @@ public class Context {
 		return configs.get(piplineId);
 	}
 
-	public static RegisterPlugin register() {
+	public static Register register() {
 		return registerPlugin;
 	}
 
-	public static void register(RegisterPlugin registerPlugin) {
+	public static void register(Register registerPlugin) {
 		Context.registerPlugin = registerPlugin;
 	}
 

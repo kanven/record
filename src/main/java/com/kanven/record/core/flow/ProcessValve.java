@@ -14,7 +14,7 @@ import com.kanven.record.LifeCycle;
 import com.kanven.record.core.Context;
 import com.kanven.record.core.Valve;
 import com.kanven.record.ext.plugins.register.DataListener;
-import com.kanven.record.ext.plugins.register.RegisterPlugin;
+import com.kanven.record.ext.plugins.register.Register;
 
 /**
  * 流程阀门 <br>
@@ -136,7 +136,7 @@ public class ProcessValve extends LifeCycle implements Valve, DataListener {
 
 	@Override
 	protected void doStart() {
-		RegisterPlugin register = Context.register();
+		Register register = Context.register();
 		if (!register.exist(path)) {
 			register.createPersistent(path);
 		}
@@ -160,13 +160,13 @@ public class ProcessValve extends LifeCycle implements Valve, DataListener {
 	@Override
 	protected void doStop() {
 		status = STOP;
-		RegisterPlugin register = Context.register();
+		Register register = Context.register();
 		register.unsubscribeDataChange(path, this);
 		changeStatus(status);
 	}
 
 	private void changeStatus(int status) {
-		RegisterPlugin register = Context.register();
+		Register register = Context.register();
 		if (!register.exist(path)) {
 			register.createPersistent(path);
 		}

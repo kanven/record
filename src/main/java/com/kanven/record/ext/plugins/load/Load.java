@@ -2,7 +2,7 @@ package com.kanven.record.ext.plugins.load;
 
 import com.kanven.record.core.flow.FlowData;
 
-public interface LoadPlugin {
+public interface Load {
 
 	void load(FlowData flowData);
 

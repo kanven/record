@@ -15,7 +15,6 @@ import com.kanven.record.core.AbstractRecord;
 import com.kanven.record.core.Context;
 import com.kanven.record.core.Task;
 import com.kanven.record.core.Valve;
-import com.kanven.record.ext.plugins.extract.ExtractorPlugin;
 
 /**
  * 
@@ -45,7 +44,7 @@ public final class RecordExtractor extends AbstractRecord implements Extractor {
 				Exception ex = null;
 				try {
 					FetcherConfig config = Context.config(piplineId);
-					ExtractorPlugin plugin = CanalFetchContext.getExtractor(piplineId, config.getExtractor());
+					com.kanven.record.ext.plugins.extract.Extractor plugin = CanalFetchContext.getExtractor(piplineId, config.getExtractor());
 					plugin.extract(flowData);
 					flowController.notify(Step.TRANSFORM, flowData);
 				} catch (InterruptedException e) {

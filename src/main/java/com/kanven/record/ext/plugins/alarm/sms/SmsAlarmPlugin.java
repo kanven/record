@@ -2,14 +2,9 @@ package com.kanven.record.ext.plugins.alarm.sms;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
-import com.kanven.record.exception.RecordException;
-import com.kanven.record.ext.plugins.alarm.AlarmPlugin;
-import org.apache.commons.lang3.StringUtils;
 
 import com.kanven.record.ext.Plugin;
-import com.kanven.record.ext.PluginConfigUtil;
+import com.kanven.record.ext.plugins.alarm.AlarmPlugin;
 
 @Plugin(name = "sms")
 public class SmsAlarmPlugin implements AlarmPlugin {

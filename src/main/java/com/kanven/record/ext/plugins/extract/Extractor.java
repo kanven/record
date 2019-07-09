@@ -3,7 +3,7 @@ package com.kanven.record.ext.plugins.extract;
 import com.kanven.record.core.flow.FlowData;
 import com.kanven.record.ext.plugins.extract.db.filter.Filter;
 
-public interface ExtractorPlugin {
+public interface Extractor {
 
 	void extract(FlowData flowData);
 

@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.kanven.record.ext.Plugin;
 import com.kanven.record.ext.PluginConfigUtil;
-import com.kanven.record.ext.plugins.register.RegisterPlugin;
+import com.kanven.record.ext.plugins.register.Register;
 
 /**
  * 
@@ -29,9 +29,9 @@ import com.kanven.record.ext.plugins.register.RegisterPlugin;
  *
  */
 @Plugin(name = "zk")
-public class ZkRegisterPlugin implements RegisterPlugin {
+public class ZkRegister implements Register {
 
-	private static final Logger log = LoggerFactory.getLogger(ZkRegisterPlugin.class);
+	private static final Logger log = LoggerFactory.getLogger(ZkRegister.class);
 
 	private static final String DEFAULT_REGISTER_CONFIG_PATH = "ext/register/zk/zk.properties";
 
@@ -43,11 +43,11 @@ public class ZkRegisterPlugin implements RegisterPlugin {
 
 	private ZkClient client;
 
-	public ZkRegisterPlugin() {
+	public ZkRegister() {
 		this(DEFAULT_REGISTER_CONFIG_PATH);
 	}
 
-	public ZkRegisterPlugin(String configPath) {
+	public ZkRegister(String configPath) {
 		if (StringUtils.isBlank(configPath)) {
 			configPath = DEFAULT_REGISTER_CONFIG_PATH;
 		}

@@ -7,7 +7,7 @@ import java.util.List;
 import com.kanven.record.core.flow.FlowData;
 import com.kanven.record.core.meta.Row;
 import com.kanven.record.ext.Plugin;
-import com.kanven.record.ext.plugins.extract.ExtractorPlugin;
+import com.kanven.record.ext.plugins.extract.Extractor;
 import com.kanven.record.ext.plugins.extract.db.filter.Filter;
 
 /**
@@ -16,7 +16,7 @@ import com.kanven.record.ext.plugins.extract.db.filter.Filter;
  *
  */
 @Plugin(name = "db")
-public class DbExtractorPlugin implements ExtractorPlugin {
+public class DbExtractor implements Extractor {
 
 	private List<Filter> filters = new ArrayList<>();
 
