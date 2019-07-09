@@ -166,7 +166,7 @@ public class Server extends LifeCycle implements ChildrenListener {
 		for (CanalFetcher fetcher : fetchers) {
 			fetcher.start();
 		}
-		regist();
+		registe();
 	}
 
 	@Override
@@ -214,8 +214,10 @@ public class Server extends LifeCycle implements ChildrenListener {
 		if (piplines.isEmpty()) {
 			throw new RecordException("the pipline id is not be assign");
 		}
+		String group = properties.getProperty(groupKey, "default");
 		for (Long pipline : piplines) {
 			FetcherConfig config = buildConfig(properties, pipline);
+			config.setGroup(group);
 			config.setPiplineId(pipline);
 			Context.config(pipline, config);
 			CanalFetcher fetcher = new CanalFetcher(config, holder.getExecutorService());
@@ -326,7 +328,7 @@ public class Server extends LifeCycle implements ChildrenListener {
 		return config;
 	}
 
-	private void regist() {
+	private void registe() {
 		Register registerPlugin = Context.register();
 		registerPlugin.subscribeChildrenChange(serverPath, this);
 		String path = registerPlugin.createEphemeralSequential(serverPath + "/", id);
@@ -344,7 +346,7 @@ public class Server extends LifeCycle implements ChildrenListener {
 	public void onSession() {
 		Register registerPlugin = Context.register();
 		if (!registerPlugin.exist(serverPath + "/" + seq)) {
-			regist();
+			registe();
 		}
 	}
 

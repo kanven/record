@@ -11,6 +11,8 @@ public class FetcherConfig implements Serializable {
 
 	private static final long serialVersionUID = -8398435717655219594L;
 
+	private String group;
+
 	private int clientId;
 
 	private long canalId;
@@ -52,6 +54,14 @@ public class FetcherConfig implements Serializable {
 	private String load;
 
 	private String loadConfig;
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
 
 	public int getClientId() {
 		return clientId;
@@ -223,13 +233,13 @@ public class FetcherConfig implements Serializable {
 
 	@Override
 	public String toString() {
-		return "FetcherConfig [clientId=" + clientId + ", canalId=" + canalId + ", slaveId=" + slaveId
-				+ ", destination=" + destination + ", dbHost=" + dbHost + ", dbPort=" + dbPort + ", dbUsername="
-				+ dbUsername + ", dbPassword=" + dbPassword + ", clusterId=" + clusterId + ", zkAddress=" + zkAddress
-				+ ", filter=" + filter + ", batchSize=" + batchSize + ", timeout=" + timeout + ", piplineId="
-				+ piplineId + ", parallelism=" + parallelism + ", extractor=" + extractor + ", extractorRule="
-				+ extractorRule + ", transform=" + transform + ", transformRule=" + transformRule + ", load=" + load
-				+ ", loadConfig=" + loadConfig + "]";
+		return "FetcherConfig [group=" + group + ", clientId=" + clientId + ", canalId=" + canalId + ", slaveId="
+				+ slaveId + ", destination=" + destination + ", dbHost=" + dbHost + ", dbPort=" + dbPort
+				+ ", dbUsername=" + dbUsername + ", dbPassword=" + dbPassword + ", clusterId=" + clusterId
+				+ ", zkAddress=" + zkAddress + ", filter=" + filter + ", batchSize=" + batchSize + ", timeout="
+				+ timeout + ", piplineId=" + piplineId + ", parallelism=" + parallelism + ", extractor=" + extractor
+				+ ", extractorRule=" + extractorRule + ", transform=" + transform + ", transformRule=" + transformRule
+				+ ", load=" + load + ", loadConfig=" + loadConfig + "]";
 	}
 
 }

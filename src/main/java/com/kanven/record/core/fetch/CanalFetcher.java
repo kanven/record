@@ -116,7 +116,7 @@ public class CanalFetcher extends AbstractRecord implements ServerListener {
 				if (work) {
 					if (count.get() == 0) {
 						log.warn("the fetcher(" + piplineId + ") not fetch the data long time");
-						Context.alarm().send("数据提取", "管道(" + piplineId + ")六小时内未拉取到任何数据，请及时排查并处理");
+						Context.alarm().send("数据提取", config.getGroup() + "管道(" + piplineId + ")六小时内未拉取到任何数据，请及时排查并处理");
 					} else {
 						count.set(0);
 					}
@@ -307,10 +307,12 @@ public class CanalFetcher extends AbstractRecord implements ServerListener {
 						work = false;
 						embedded.rollback(identity, confirm.batchId());
 						log.error(String.format("the pipline(%s) handle the ack error", piplineId));
-						Context.alarm().send("数据回滚", "管道(" + piplineId + ")发生回滚操作，数据拉取操作停止，请及时排查并处理");
+						Context.alarm().send("数据回滚",
+								config.getGroup() + "管道(" + piplineId + ")发生回滚操作，数据拉取操作停止，请及时排查并处理");
 					} else {
 						work = false;
-						Context.alarm().send("数据确认类型错误", "管道(" + piplineId + ")出现未知确认类型，数据拉取操作停止，请及时排查并处理");
+						Context.alarm().send("数据确认类型错误",
+								config.getGroup() + "管道(" + piplineId + ")出现未知确认类型，数据拉取操作停止，请及时排查并处理");
 						throw new RecordException("the back type is not be elimited");
 					}
 				}
@@ -442,7 +444,7 @@ public class CanalFetcher extends AbstractRecord implements ServerListener {
 				embedded.unsubscribe(identity);
 				embedded.stop(config.getDestination());
 				embedded.stop();
-				Context.alarm().send("数据拉取停止", "管道(" + piplineId + ")工作停止，请及时排查并处理");
+				Context.alarm().send("数据拉取停止", config.getGroup() + "管道(" + piplineId + ")工作停止，请及时排查并处理");
 			}
 			break;
 		case THREAD_POOL_REJECTED:
