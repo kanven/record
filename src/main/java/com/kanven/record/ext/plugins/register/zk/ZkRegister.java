@@ -1,5 +1,6 @@
 package com.kanven.record.ext.plugins.register.zk;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -7,20 +8,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.kanven.record.exception.RecordException;
-import com.kanven.record.ext.plugins.register.ChildrenListener;
-import com.kanven.record.ext.plugins.register.DataListener;
 import org.I0Itec.zkclient.IZkChildListener;
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.IZkStateListener;
 import org.I0Itec.zkclient.ZkClient;
+import org.I0Itec.zkclient.exception.ZkMarshallingError;
+import org.I0Itec.zkclient.serialize.ZkSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.zookeeper.Watcher.Event.KeeperState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.kanven.record.exception.RecordException;
 import com.kanven.record.ext.Plugin;
 import com.kanven.record.ext.PluginConfigUtil;
+import com.kanven.record.ext.plugins.register.ChildrenListener;
+import com.kanven.record.ext.plugins.register.DataListener;
 import com.kanven.record.ext.plugins.register.Register;
 
 /**
@@ -62,7 +65,7 @@ public class ZkRegister implements Register {
 	}
 
 	private void init(String conn, int sessionTimeout, int connectionTimeout) {
-		client = new ZkClient(conn, sessionTimeout, connectionTimeout);
+		client = new ZkClient(conn, sessionTimeout, connectionTimeout, new Serializer());
 		client.subscribeStateChanges(new IZkStateListener() {
 
 			@Override
@@ -251,6 +254,32 @@ public class ZkRegister implements Register {
 		if (!exist(p)) {
 			client.createPersistent(p, true);
 		}
+	}
+
+	private static class Serializer implements ZkSerializer {
+
+		@Override
+		public byte[] serialize(Object data) throws ZkMarshallingError {
+			try {
+				String s = (String) data;
+				return s.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				throw new ZkMarshallingError(e);
+			} catch (Exception e) {
+				throw new ZkMarshallingError(e);
+			}
+		}
+
+		@Override
+		public Object deserialize(byte[] bytes) throws ZkMarshallingError {
+			try {
+				String c = new String(bytes, "UTF-8");
+				return c;
+			} catch (UnsupportedEncodingException e) {
+				throw new ZkMarshallingError(e);
+			}
+		}
+
 	}
 
 }
