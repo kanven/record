@@ -2,33 +2,30 @@
 
 # Record 系统概述
 
-## 一、背景
 
-设计Record系统的想法来源于用户中心信息变更轨迹跟踪的需要。用户状态繁多、变更操作时常发生譬如用户手机号修改、微信公众号关注、绑定、取关、解绑等等。用户状态一旦出现问题，排查起来就很是棘手。如果知道信息的变更轨迹，通过回放，就能够准确知道变更的全过程，有利于问题的排查、确认和优化，因此变更轨迹记录是比较重要和必要的。为了不将业务代码和变更记录操作杂糅在一起，Record系统应用而生。
-
-## 二、目的
+## 一、目的
 
 记录变更信息与业务系统解耦，接入简单，易于扩展、高可用、高并发。
 
-## 三、工作原理
+## 二、工作原理
 
 Record通过Canel 以slave的方式同步Mysql的binlog日志并且以并发的方式将数据进行拉取、抽取、转换，最终以串行的方式进行持久化操作。
 
 <div align=center>
-    <img src = "http://git.fcbox.com/GP/CFG/record/raw/master/images/%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%9B%BE.jpg" alt="工作原理图">
+    <img src = "https://github.com/kanven/record/blob/master/images/工作原理图.jpg" alt="工作原理图">
 </div>
 
-## 四、架构
+## 三、架构
 
 Record 大致可分为配置、HA、Core、Context、插件五大模块。配置模块负责节点、管道配置项的解析和校验；HA模块负责节点主备选举和切换；Core模块负责数据流控制、流转、同步确认、回滚、告警处理；Context模块负责插件、管道、告警、配置上下文管理。
 
 <div align=center>
-    <img src = "http://git.fcbox.com/GP/CFG/record/raw/master/images/%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt="整体架构图">
+    <img src = "https://github.com/kanven/record/blob/master/images/整体架构图.jpg" alt="整体架构图">
 </div>
 
-## 五、配置
+## 四、配置
 
-### 5.1 节点配置
+### 4.1 节点配置
 
 |配置名称|配置参数|说明|
 | :---: | :---: | :---: |
@@ -40,7 +37,7 @@ Record 大致可分为配置、HA、Core、Context、插件五大模块。配置
 |管道编号|	pipline.id|	多个管道以“，”分隔，必须为整形且必填|
 
 
-### 5.2 管道配置
+### 4.2 管道配置
 
 piplineId是节点配置项pipline.id中的值,不同的管道均需要有对应的一套管道配置。
 
@@ -65,11 +62,11 @@ piplineId是节点配置项pipline.id中的值,不同的管道均需要有对应
 |loader 名称|	pipline. {piplineId}.loader|	必填|
 
 
-### 5.3 插件配置
+### 4.3 插件配置
 
 插件的配置文件位于配置文件 ext/{插件}/{插件名}/{插件名}.properties。
 
-#### 5.3.1 ES插件配置
+#### 4.3.1 ES插件配置
 
 |配置名称|配置参数|说明|
 | :---: | :---: | :---: |
@@ -77,7 +74,7 @@ piplineId是节点配置项pipline.id中的值,不同的管道均需要有对应
 |ES集群地址|	es.cluster.address|	必填|
 
 
-#### 5.3.2 Zookeeper(Register插件)配置
+#### 4.3.2 Zookeeper(Register插件)配置
 
 |配置名称|配置参数|说明|
 | :---: | :---: | :---: |
@@ -87,14 +84,14 @@ piplineId是节点配置项pipline.id中的值,不同的管道均需要有对应
 
 
 
-### 5.4 抽取规则
+### 4.4 抽取规则
 
 * <b>范式：</b>[库名|前缀*].\[表名 \(字段名:Boolean or * \)[|表名 \(字段名:Boolean or * \)*]\]
 
 * <b>说明：</b>范式中的字段名后的Boolean表示更新对比时是否忽略该字段，譬如更新时间、更新人等无重要意义的字段
 
 
-## 六、插件
+## 五、插件
 
 由图4.1整体架构可以知道Register、Alarm、Extractor、Transform、Loader是基于插件实现的。如果插件需要其他实现方式，可以根据一些规则进行拓展：
 
