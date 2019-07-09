@@ -1,7 +1,7 @@
 package com.kanven.record.ext.plugins.extract.db.parser;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,9 +27,9 @@ public final class Schema {
 	/**
 	 * 数据库表
 	 */
-	private final Set<Table> tables;
+	private final Map<String, Table> tables;
 
-	private Schema(String prifix, String suffix, String db, Set<Table> tables) {
+	private Schema(String prifix, String suffix, String db, Map<String, Table> tables) {
 		if (StringUtils.isBlank(db) && StringUtils.isBlank(prifix) && StringUtils.isBlank(suffix)) {
 			throw new RecordException("数据库名不能为空！");
 		}
@@ -54,8 +54,26 @@ public final class Schema {
 		return this.db;
 	}
 
-	public final Set<Table> tables() {
-		return this.tables;
+	public final boolean satifyDb(String db) {
+		if (StringUtils.isBlank(dbPrefix) && StringUtils.isBlank(dbSuffix)) {
+			return this.db.equals(db);
+		}
+		if (StringUtils.isNoneBlank(dbPrefix) && StringUtils.isNoneBlank(dbSuffix)) {
+			return db.startsWith(dbPrefix) && db.endsWith(dbSuffix);
+		}
+		if (StringUtils.isNotBlank(dbPrefix)) {
+			return db.startsWith(dbPrefix);
+		} else {
+			return db.endsWith(dbSuffix);
+		}
+	}
+
+	public final boolean hasTable(String table) {
+		return tables.containsKey(table);
+	}
+
+	public final Table Table(String name) {
+		return tables.get(name);
 	}
 
 	@Override
@@ -80,7 +98,7 @@ public final class Schema {
 		 */
 		private String db;
 
-		private Set<Table> tables = new HashSet<>();
+		private Map<String, Table> tables = new HashMap<>();
 
 		private SchemaBuilder() {
 
@@ -106,7 +124,7 @@ public final class Schema {
 		}
 
 		public SchemaBuilder table(Table table) {
-			this.tables.add(table);
+			this.tables.put(table.name(), table);
 			return this;
 		}
 

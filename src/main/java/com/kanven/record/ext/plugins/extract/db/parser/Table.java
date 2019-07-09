@@ -2,8 +2,8 @@ package com.kanven.record.ext.plugins.extract.db.parser;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,29 +21,29 @@ public final class Table implements Serializable {
 	/**
 	 * 字段
 	 */
-	private final Set<Field> fields;
+	private final Map<String, Field> fields;
 
 	/**
 	 * 是否所有字段
 	 */
 	private final boolean all;
 
-	private Table(String name, Set<Field> fields, boolean all) {
+	private Table(String name, Map<String, Field> fields, boolean all) {
 		if (StringUtils.isBlank(name)) {
 			throw new RecordException("表名不能为空！");
 		}
 		this.name = name;
 		this.all = all;
-		Set<Field> fs = null;
+		Map<String, Field> fs = null;
 		if (all) {
-			fs = new HashSet<>(0);
+			fs = new HashMap<>(0);
 		} else {
 			if (fields == null || fields.isEmpty()) {
 				throw new RecordException(name + "表字段不能为空！");
 			}
 			fs = fields;
 		}
-		this.fields = Collections.unmodifiableSet(fs);
+		this.fields = Collections.unmodifiableMap(fs);
 	}
 
 	public final String name() {
@@ -54,8 +54,16 @@ public final class Table implements Serializable {
 		return this.all;
 	}
 
-	public final Set<Field> fields() {
-		return this.fields;
+	public final Field field(String name) {
+		return this.fields.get(name);
+	}
+
+	public boolean hasField() {
+		return !this.fields.isEmpty();
+	}
+
+	public boolean contains(String name) {
+		return fields.containsKey(name);
 	}
 
 	@Override
@@ -101,7 +109,7 @@ public final class Table implements Serializable {
 
 		private String name;
 
-		private Set<Field> fields = new HashSet<>();
+		private Map<String, Field> fields = new HashMap<>();
 
 		private boolean all;
 
@@ -124,7 +132,7 @@ public final class Table implements Serializable {
 		}
 
 		public TableBuilder field(Field field) {
-			this.fields.add(field);
+			this.fields.put(field.name, field);
 			return this;
 		}
 

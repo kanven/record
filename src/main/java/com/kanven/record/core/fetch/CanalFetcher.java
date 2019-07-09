@@ -14,9 +14,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.kanven.record.core.domain.PoolRejected;
-import com.kanven.record.core.parse.DataType;
-import com.kanven.record.exception.RecordException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +35,7 @@ import com.kanven.record.core.AbstractRecord;
 import com.kanven.record.core.Context;
 import com.kanven.record.core.Task;
 import com.kanven.record.core.Valve;
+import com.kanven.record.core.domain.PoolRejected;
 import com.kanven.record.core.etl.Extractor;
 import com.kanven.record.core.etl.Loader;
 import com.kanven.record.core.etl.Transformer;
@@ -51,10 +49,10 @@ import com.kanven.record.core.flow.ReverseConfirm.BackType;
 import com.kanven.record.core.flow.Step;
 import com.kanven.record.core.meta.DDLMeta;
 import com.kanven.record.core.meta.Row;
+import com.kanven.record.core.parse.DataType;
+import com.kanven.record.exception.RecordException;
 import com.kanven.record.ext.PluginContext;
 import com.kanven.record.ext.plugins.extract.ExtractorPlugin;
-import com.kanven.record.ext.plugins.extract.db.DbParser;
-import com.kanven.record.ext.plugins.extract.db.Rule;
 import com.kanven.record.ext.plugins.extract.db.filter.Filter;
 import com.kanven.record.ext.plugins.extract.db.filter.impl.RecordRowFilter;
 import com.kanven.record.ext.plugins.load.LoadPlugin;
@@ -330,9 +328,7 @@ public class CanalFetcher extends AbstractRecord implements ServerListener {
 			Filter filter = null;
 			String rule = config.getExtractorRule();
 			if (StringUtils.isNoneBlank(rule)) {
-				DbParser parser = new DbParser();
-				Rule r = parser.parse(rule);
-				filter = new RecordRowFilter(r);
+				filter = new RecordRowFilter(rule);
 			}
 			try {
 				plugin = PluginContext.getExtractor(config.getExtractor()).newInstance();
