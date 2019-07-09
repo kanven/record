@@ -4,7 +4,7 @@
 
 	<groupId>com.kanven</groupId>
 	<artifactId>record</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.0.1-RELEASE</version>
 	<packaging>jar</packaging>
 
 	<name>record</name>
@@ -20,6 +20,7 @@
 		<slf4j.version>1.7.25</slf4j.version>
 		<mockito.version>1.10.19</mockito.version>
 		<zktec.version>0.11</zktec.version>
+		<antlr.version>4.7.2</antlr.version>
 	</properties>
 
 	<dependencies>
@@ -102,6 +103,11 @@
 			<groupId>com.101tec</groupId>
 			<artifactId>zkclient</artifactId>
 			<version>${zktec.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.antlr</groupId>
+		    <artifactId>antlr4-runtime</artifactId>
+		    <version>${antlr.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
