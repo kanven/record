@@ -7,15 +7,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-import com.kanven.record.core.flow.FlowData;
-import com.kanven.record.core.meta.Column;
-import com.kanven.record.core.meta.Row;
-import com.kanven.record.exception.RecordException;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
@@ -34,6 +30,11 @@ import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
+import com.kanven.record.core.flow.FlowData;
+import com.kanven.record.core.meta.Column;
+import com.kanven.record.core.meta.Row;
+import com.kanven.record.exception.RecordException;
+
 /**
  * 
  * @author kanven
@@ -45,14 +46,21 @@ public class EsClient {
 
 	private IndicesAdminClient admin;
 
-	private Set<String> indexs = new HashSet<>();
+	private Cache cache = new Cache();
 
-	public EsClient(String clusterName, String address) {
+	private Map<String, IndexRule> idxm;
+
+	public EsClient(String clusterName, String address, Map<String, IndexRule> idxm) {
 		if (StringUtils.isBlank(clusterName)) {
 			throw new RecordException("es cluster name should not be null");
 		}
 		if (StringUtils.isBlank(address)) {
 			throw new RecordException("es cluster address should not be null");
+		}
+		if (idxm == null) {
+			this.idxm = new HashMap<>(0);
+		} else {
+			this.idxm = idxm;
 		}
 		Settings settings = Settings.builder().put("cluster.name", clusterName).put("client.transport.sniff", false)
 				.build();
@@ -179,33 +187,35 @@ public class EsClient {
 
 	private void createIndex(Row row) {
 		String table = row.table();
-		if (indexs.contains(table)) {
+		if (cache.hasKey(table)) {
 			return;
 		}
-		if (!existIndex(table)) {
-			admin.prepareCreate(table).get();
-		}
-		synchronized (table) {
-			if (indexs.contains(table)) {
-				return;
-			}
-			try {
-				XContentBuilder mapping = jsonBuilder().startObject().startObject("properties");
-				Set<Column> columns = row.columns();
-				for (Column column : columns) {
-					mapping.startObject(column.name()).field("index", "true")
-							.field("type", getType(column.type())).endObject();
+		// 构造索引名
+		String index = table + idxm.get(table).handler();
+		if (!existIndex(index)) {
+			synchronized (table) {
+				if (cache.hasKey(table)) {
+					return;
 				}
-				mapping.startObject("execute_time").field("index", "true").field("type", "date").endObject();
-				mapping.endObject().endObject();
-				PutMappingRequest request = Requests.putMappingRequest(row.table()).type(row.schema()).source(mapping);
-				admin.putMapping(request).actionGet();
-			} catch (IOException e) {
-				throw new RecordException("the " + table + " index's mapping created failure");
+				admin.prepareCreate(index).get();
+				try {
+					XContentBuilder mapping = jsonBuilder().startObject().startObject("properties");
+					Set<Column> columns = row.columns();
+					for (Column column : columns) {
+						mapping.startObject(column.name()).field("index", "true").field("type", getType(column.type()))
+								.endObject();
+					}
+					mapping.startObject("execute_time").field("index", "true").field("type", "date").endObject();
+					mapping.endObject().endObject();
+					PutMappingRequest request = Requests.putMappingRequest(row.table()).type(row.schema())
+							.source(mapping);
+					admin.putMapping(request).actionGet();
+				} catch (IOException e) {
+					throw new RecordException("the " + table + " index's mapping created failure");
+				}
 			}
-			indexs.add(table);
 		}
-
+		cache.set(table, index, idxm.get(table).time(), TimeUnit.MILLISECONDS);
 	}
 
 	private String getType(String type) {

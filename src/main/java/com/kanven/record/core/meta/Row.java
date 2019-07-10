@@ -20,13 +20,13 @@ public final class Row implements Serializable {
 
 	private String schema;
 
-	private final String table;
+	private String table;
 
-	private final Set<Column> primaryKey;
+	private Set<Column> primaryKey;
 
-	private final Set<Column> olds;
+	private Set<Column> olds;
 
-	private final Set<Column> columns;
+	private Set<Column> columns;
 
 	private Long executeTime;
 
