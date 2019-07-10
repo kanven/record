@@ -191,7 +191,11 @@ public class EsClient {
 			return;
 		}
 		// 构造索引名
-		String index = table + idxm.get(table).handler();
+		IndexRule r =  idxm.get(table);
+		if(r == null){
+			r = IndexRule.NORMAL;
+		}
+		String index = table + r.handler();
 		if (!existIndex(index)) {
 			synchronized (table) {
 				if (cache.hasKey(table)) {
@@ -215,7 +219,7 @@ public class EsClient {
 				}
 			}
 		}
-		cache.set(table, index, idxm.get(table).time(), TimeUnit.MILLISECONDS);
+		cache.set(table, index, r.time(), TimeUnit.MILLISECONDS);
 	}
 
 	private String getType(String type) {
