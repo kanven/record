@@ -129,7 +129,7 @@ public class EsClient {
 				}
 				for (Column column : columns) {
 					if (column.isKey()) {
-						request.add(client.prepareDelete(row.schema(), row.table(),
+						request.add(client.prepareDelete(cache.get(row.table()), row.schema(),
 								column.value() + "" + row.executeTime()));
 						break;
 					}
@@ -145,7 +145,7 @@ public class EsClient {
 
 	private UpdateRequest updateRecord(Row row) {
 		UpdateRequest request = new UpdateRequest();
-		request.index(row.table());
+		request.index(cache.get(row.table()));
 		request.type(row.schema());
 		Set<Column> columns = row.columns();
 		Set<Column> keys = row.primaryKey();
@@ -166,7 +166,7 @@ public class EsClient {
 	}
 
 	private IndexRequest addRecord(Row row) {
-		IndexRequest request = new IndexRequest(row.table(), row.schema());
+		IndexRequest request = new IndexRequest(cache.get(row.table()), row.schema());
 		Set<Column> columns = row.columns();
 		Map<String, Object> items = new HashMap<>(columns.size());
 		Set<Column> keys = row.primaryKey();
@@ -191,8 +191,8 @@ public class EsClient {
 			return;
 		}
 		// 构造索引名
-		IndexRule r =  idxm.get(table);
-		if(r == null){
+		IndexRule r = idxm.get(table);
+		if (r == null) {
 			r = IndexRule.NORMAL;
 		}
 		String index = table + r.handler();
@@ -211,8 +211,7 @@ public class EsClient {
 					}
 					mapping.startObject("execute_time").field("index", "true").field("type", "date").endObject();
 					mapping.endObject().endObject();
-					PutMappingRequest request = Requests.putMappingRequest(row.table()).type(row.schema())
-							.source(mapping);
+					PutMappingRequest request = Requests.putMappingRequest(index).type(row.schema()).source(mapping);
 					admin.putMapping(request).actionGet();
 				} catch (IOException e) {
 					throw new RecordException("the " + table + " index's mapping created failure");

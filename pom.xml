@@ -327,7 +327,7 @@
 		<profile>
 			<id>dev</id>
 			<properties>
-				<log.dir>/app/applogs/record</log.dir>
+				<log.dir>${basedir}</log.dir>
 			</properties>
 			<activation>
                 <activeByDefault>true</activeByDefault>
