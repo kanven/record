@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.kanven.record.exception.RecordException;
-import com.kanven.record.ext.plugins.alarm.AlarmPlugin;
+import com.kanven.record.ext.plugins.alarm.Alarm;
 import com.kanven.record.ext.plugins.extract.Extractor;
 import com.kanven.record.ext.plugins.load.Load;
 import com.kanven.record.ext.plugins.register.Register;
@@ -33,7 +33,7 @@ public final class PluginContext {
 
 	private static final Map<String, Class<? extends Register>> registers = new HashMap<>();
 	
-	private static final Map<String, Class<? extends AlarmPlugin>> alarms = new HashMap<>();
+	private static final Map<String, Class<? extends Alarm>> alarms = new HashMap<>();
 
 	public final static Class<? extends Extractor> getExtractor(String name) {
 		return extractors.get(name);
@@ -51,7 +51,7 @@ public final class PluginContext {
 		return registers.get(name);
 	}
 	
-	public final static Class<? extends AlarmPlugin> getAlarm(String name){
+	public final static Class<? extends Alarm> getAlarm(String name){
 		return alarms.get(name);
 	}
 
@@ -64,7 +64,7 @@ public final class PluginContext {
 		loadPlugins(reflections.getSubTypesOf(Transform.class), PluginContext.transforms);
 		loadPlugins(reflections.getSubTypesOf(Load.class), PluginContext.loads);
 		loadPlugins(reflections.getSubTypesOf(Register.class), PluginContext.registers);
-		loadPlugins(reflections.getSubTypesOf(AlarmPlugin.class), PluginContext.alarms);
+		loadPlugins(reflections.getSubTypesOf(Alarm.class), PluginContext.alarms);
 	}
 
 	private static <T> void loadPlugins(Set<Class<? extends T>> plugins, Map<String, Class<? extends T>> container) {

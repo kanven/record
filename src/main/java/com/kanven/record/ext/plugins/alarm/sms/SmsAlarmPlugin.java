@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kanven.record.ext.Plugin;
-import com.kanven.record.ext.plugins.alarm.AlarmPlugin;
+import com.kanven.record.ext.plugins.alarm.Alarm;
 
 @Plugin(name = "sms")
-public class SmsAlarmPlugin implements AlarmPlugin {
+public class SmsAlarmPlugin implements Alarm {
 
 	private static final String DEFAULT_CONFIG_PATH = "ext/alarm/sms/sms.properties";
 

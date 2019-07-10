@@ -1,6 +1,6 @@
 package com.kanven.record.ext.plugins.alarm;
 
-public interface AlarmPlugin {
+public interface Alarm {
 	
 	void send(String topic,String content);
 	

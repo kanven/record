@@ -27,7 +27,7 @@ import com.kanven.record.core.fetch.CanalFetcher;
 import com.kanven.record.core.fetch.FetcherConfig;
 import com.kanven.record.exception.RecordException;
 import com.kanven.record.ext.PluginContext;
-import com.kanven.record.ext.plugins.alarm.AlarmPlugin;
+import com.kanven.record.ext.plugins.alarm.Alarm;
 import com.kanven.record.ext.plugins.register.ChildrenListener;
 import com.kanven.record.ext.plugins.register.Register;
 
@@ -231,7 +231,7 @@ public class Server extends LifeCycle implements ChildrenListener {
 			throw new RecordException("alarm should't be null");
 		}
 		try {
-			AlarmPlugin alarmPlugin = PluginContext.getAlarm(name).newInstance();
+			Alarm alarmPlugin = PluginContext.getAlarm(name).newInstance();
 			Context.alarm(alarmPlugin);
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RecordException("the alarm create failure", e);

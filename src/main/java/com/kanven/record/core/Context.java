@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.kanven.record.core.fetch.FetcherConfig;
-import com.kanven.record.ext.plugins.alarm.AlarmPlugin;
+import com.kanven.record.ext.plugins.alarm.Alarm;
 import com.kanven.record.ext.plugins.register.Register;
 
 public class Context {
@@ -13,7 +13,7 @@ public class Context {
 
 	private static Register registerPlugin;
 
-	private static AlarmPlugin alarmPlugin;
+	private static Alarm alarmPlugin;
 
 	public static void config(Long piplineId, FetcherConfig config) {
 		configs.put(piplineId, config);
@@ -31,11 +31,11 @@ public class Context {
 		Context.registerPlugin = registerPlugin;
 	}
 
-	public static void alarm(AlarmPlugin alarmPlugin) {
+	public static void alarm(Alarm alarmPlugin) {
 		Context.alarmPlugin = alarmPlugin;
 	}
 
-	public static AlarmPlugin alarm() {
+	public static Alarm alarm() {
 		return Context.alarmPlugin;
 	}
 
