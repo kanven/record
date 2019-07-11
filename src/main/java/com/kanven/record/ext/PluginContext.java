@@ -23,7 +23,7 @@ import org.reflections.util.ConfigurationBuilder;
  */
 public final class PluginContext {
 
-	private static final String BASE_PACKAGE = "com.fcbox.record.ext.plugins";
+	private static final String BASE_PACKAGE = "com.kanven.record.ext.plugins";
 
 	private static final Map<String, Class<? extends Extractor>> extractors = new HashMap<>();
 

@@ -16,6 +16,9 @@ class Cache {
 	public <T> T get(String key) {
 		Value<?> v = cache.get(key);
 		if (v != null) {
+			if (v.expired == -1) {
+				return (T) v.value;
+			}
 			long now = v.unit.toNanos(System.currentTimeMillis());
 			if (now < v.expired) {
 				return (T) v.value;

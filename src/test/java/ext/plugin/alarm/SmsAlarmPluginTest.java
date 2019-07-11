@@ -4,15 +4,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.kanven.record.ext.plugins.alarm.sms.SmsAlarmPlugin;
+import com.kanven.record.ext.plugins.alarm.sms.SmsAlarm;
 
 public class SmsAlarmPluginTest {
 	
-	private SmsAlarmPlugin alarm;
+	private SmsAlarm alarm;
 
 	@Before
 	public void before(){
-		alarm = new SmsAlarmPlugin();
+		alarm = new SmsAlarm();
 	}
 	
 	

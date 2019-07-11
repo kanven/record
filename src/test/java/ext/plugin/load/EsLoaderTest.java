@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.kanven.record.core.flow.FlowData;
@@ -17,16 +15,32 @@ import com.kanven.record.ext.plugins.load.es.EsLoader;
 
 public class EsLoaderTest {
 
-	private Load load;
-
-	@Before
-	public void before() {
-		String config = "ext/load/es/test/es.properties";
-		load = new EsLoader(config);
+	@Test
+	public void testLoadYear() {
+		String config = "ext/load/es/test/year.properties";
+		load(config);
 	}
 
 	@Test
-	public void testLoad() {
+	public void testNormal() {
+		String config = "ext/load/es/test/normal.properties";
+		load(config);
+	}
+
+	@Test
+	public void testMonth() {
+		String config = "ext/load/es/test/month.properties";
+		load(config);
+	}
+
+	@Test
+	public void testDay() {
+		String config = "ext/load/es/test/day.properties";
+		load(config);
+	}
+
+	private void load(String config) {
+		Load load = new EsLoader(config);
 		FlowData fd = new FlowData(1L);
 		List<List<Row>> rows = new ArrayList<>();
 		List<Row> rs = new ArrayList<>();
@@ -42,10 +56,6 @@ public class EsLoaderTest {
 		rows.add(rs);
 		fd.setRows(rows);
 		load.load(fd);
-	}
-
-	@After
-	public void after() {
 		load.close();
 	}
 

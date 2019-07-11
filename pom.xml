@@ -227,6 +227,7 @@
 						<exclude>*/*.bat</exclude>
 						<exclude>*/*.sh</exclude>
 						<exclude>*/**/*.xml</exclude>
+						<exclude>antlr4/*</exclude>
 					</excludes>
 				</configuration>
 				<!-- 打jar包时需要把配置文件给排除在外 -->
@@ -332,6 +333,12 @@
 			<activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<log.dir>/app/applogs</log.dir>
+			</properties>
 		</profile>
 	</profiles>
 	

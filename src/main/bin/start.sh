@@ -42,7 +42,7 @@ else
     JAVA_MEM_OPTS=" -server -Xms1g -Xmx1g -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC -XX:HeapDumpPath=$DUMP_DIR/java_dump.hprof -Xloggc:$GC_DIR/gc.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps"
 fi
 echo "starting server....."
-$JAVA $JAVA_MEM_OPTS $JAVA_DATA  -classpath $CONF_DIR:$LIB_JARS -Dlogback.home=$LOG_DIR Bootstrapper 1>>$STD_OUT_FILE 2>&1 &
+$JAVA $JAVA_MEM_OPTS $JAVA_DATA  -classpath $CONF_DIR:$LIB_JARS -Dlogback.home=$LOG_DIR com.kanven.record.Bootstrapper 1>>$STD_OUT_FILE 2>&1 &
 if [ $?==0 ];then
    echo "服务正常启动"
 else

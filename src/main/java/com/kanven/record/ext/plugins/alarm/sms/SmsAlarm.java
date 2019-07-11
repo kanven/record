@@ -7,18 +7,18 @@ import com.kanven.record.ext.Plugin;
 import com.kanven.record.ext.plugins.alarm.Alarm;
 
 @Plugin(name = "sms")
-public class SmsAlarmPlugin implements Alarm {
+public class SmsAlarm implements Alarm {
 
 	private static final String DEFAULT_CONFIG_PATH = "ext/alarm/sms/sms.properties";
 
 
 	private List<String> alarms = new ArrayList<>();
 
-	public SmsAlarmPlugin() {
+	public SmsAlarm() {
 		this(DEFAULT_CONFIG_PATH);
 	}
 
-	public SmsAlarmPlugin(String configPath) {
+	public SmsAlarm(String configPath) {
 
 	}
 
