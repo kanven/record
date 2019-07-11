@@ -76,6 +76,10 @@ public final class Schema {
 		return tables.get(name);
 	}
 
+	public final int tableSize() {
+		return tables.size();
+	}
+
 	@Override
 	public String toString() {
 		return "Schema [dbPrefix=" + dbPrefix + ", dbSuffix=" + dbSuffix + ", db=" + db + ", tables=" + tables + "]";

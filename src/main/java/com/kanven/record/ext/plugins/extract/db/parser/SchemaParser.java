@@ -1,5 +1,4 @@
 // Generated from schema.g4 by ANTLR 4.7.2
-
 package com.kanven.record.ext.plugins.extract.db.parser;
 
 import org.antlr.v4.runtime.atn.*;
@@ -20,7 +19,7 @@ public class SchemaParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		FORMAT=10, WS=11;
+		FORMAT=10, WS=11, COMMENT=12;
 	public static final int
 		RULE_schema = 0, RULE_db = 1, RULE_table = 2, RULE_tableName = 3, RULE_tableC = 4, 
 		RULE_fieldName = 5, RULE_flag = 6;
@@ -40,7 +39,7 @@ public class SchemaParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, "FORMAT", 
-			"WS"
+			"WS", "COMMENT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -533,7 +532,7 @@ public class SchemaParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\r:\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\16:\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\3\2\3\2\6\2\24\n\2\r\2"+
 		"\16\2\25\3\2\3\2\3\3\3\3\3\3\3\3\3\3\5\3\37\n\3\3\4\3\4\3\4\3\4\3\4\3"+
 		"\5\3\5\3\6\3\6\3\6\7\6+\n\6\f\6\16\6.\13\6\3\6\5\6\61\n\6\3\7\3\7\3\7"+

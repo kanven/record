@@ -59,3 +59,8 @@ WS
 :
 	[ \t\r\n]+ -> skip
 ;
+
+COMMENT
+:
+	'/*' .*? '*/' -> skip
+;
